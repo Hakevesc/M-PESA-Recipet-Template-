@@ -71,8 +71,8 @@ body { font-family: 'Inter', Arial, sans-serif; background: #E8E8E8; display: fl
 .btn-outline:hover:not(:disabled) { background: #F5F5F5; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* edit mode */
-body.editing .page [data-editable] {
+/* edit mode - only the yellow-highlighted value blocks (data-required) are editable */
+body.editing .page [data-editable][data-required] {
   outline: 1px dashed #00A651;
   outline-offset: 2px;
   border-radius: 2px;
@@ -81,9 +81,9 @@ body.editing .page [data-editable] {
   min-height: 1em;
   transition: background .12s;
 }
-body.editing .page [data-editable]:hover { background: rgba(0,166,81,0.06); }
-body.editing .page [data-editable]:focus { outline: 2px solid #00A651; background: rgba(0,166,81,0.10); }
-body.editing .page [data-editable] .amharic { outline: none; }
+body.editing .page [data-editable][data-required]:hover { background: rgba(0,166,81,0.06); }
+body.editing .page [data-editable][data-required]:focus { outline: 2px solid #00A651; background: rgba(0,166,81,0.10); }
+body.editing .page [data-editable][data-required] .amharic { outline: none; }
 
 /* fields still holding sample data - screen only, never captured in the export */
 body:not(.exporting) .page [data-editable].needs-data {

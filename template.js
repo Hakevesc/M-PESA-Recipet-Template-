@@ -18,7 +18,11 @@
   var btnReset = document.getElementById('btn-reset');
 
   var fields = [].slice.call(receipt.querySelectorAll('[data-editable]'));
-  var required = fields.filter(function (el) { return el.hasAttribute('data-required'); });
+  // Only the yellow-highlighted value blocks (the data-required fields) stay
+  // editable. Everything else carrying data-editable - labels, the title, the
+  // section/table headers, the top company details - is locked.
+  var editable = fields.filter(function (el) { return el.hasAttribute('data-required'); });
+  var required = editable;
   var defaults = {};     // pristine template markup, per field
   var sampleText = {};   // pristine text, used to spot fields nobody filled in
   var editing = false;
@@ -73,7 +77,7 @@
   function setEditing(on) {
     editing = on;
     document.body.classList.toggle('editing', on);
-    fields.forEach(function (el) {
+    editable.forEach(function (el) {
       if (on) el.setAttribute('contenteditable', 'true');
       else el.removeAttribute('contenteditable');
     });
@@ -91,17 +95,17 @@
   // field instead of doing nothing.
   receipt.addEventListener('mousedown', function (e) {
     if (!editing) return;
-    if (e.target.closest('[data-editable]')) return;   // already on a field
+    if (e.target.closest('[data-editable][data-required]')) return;  // already on an editable block
     var host = e.target.closest('.info-row, .info-group, .title-box, .section-header, td, th');
     if (!host) return;
-    var target = host.matches('[data-editable]') ? host : host.querySelector('[data-editable]');
+    var target = host.matches('[data-editable][data-required]') ? host : host.querySelector('[data-editable][data-required]');
     if (!target) return;
     e.preventDefault();
     target.focus();
   });
 
   // keep pasted content as plain text and keep fields single-line
-  fields.forEach(function (el) {
+  editable.forEach(function (el) {
     el.addEventListener('paste', function (e) {
       e.preventDefault();
       var text = (e.clipboardData || window.clipboardData).getData('text/plain');
@@ -131,7 +135,7 @@
   }
 
   // clear a field's warning as soon as it is actually changed
-  fields.forEach(function (el) {
+  editable.forEach(function (el) {
     el.addEventListener('input', function () {
       if (el.classList.contains('needs-data')) markPending();
     });

@@ -21,20 +21,23 @@ PDF Receipt Template/
 
 | Button | What it does |
 | --- | --- |
-| **Edit** | Turns every field on the receipt into an editable field (dashed green outline). |
+| **Edit** | Turns the yellow-highlighted value blocks into editable fields (dashed green outline). Labels, headings and the top company details stay locked. |
 | **Update** | Ends edit mode, applies the changes and saves them in the browser. Shows "Updated", or warns if fields still hold sample data. |
 | **Print** | Browser print dialog, fitted to one A4 page. |
 | **Download A4 PDF** | Saves `M-PESA-Receipt-<TRANSACTION ID>.pdf` — one page, exactly 210 × 297 mm. |
 | **Reset** | Restores the original placeholder values. |
 
-Editable: the title, every label and value under TRANSACTION INFORMATION, the
-TRANSACTION DETAIL table and the additional info rows.
+Editable: only the yellow-highlighted value blocks - the 15 `data-required`
+fields holding sample data (payer/customer info, dates, IDs, amounts, and
+የክፍያ መንገድ / PAYMENT CHANNEL). The title, every label, the section and table
+headers, and the additional-info rows are locked, exactly like the company block
+at the top.
 
 ## Sample data and the "needs real data" warning
 
 The template ships with placeholder values (`Payer Full Name`, `2517XXXXXXXX`,
 `0.00 BIRR`, `XXXXXXXXXX`, `RCP-0000-SAMPLE`, `DD/MM/YY at 00:00 AM`, …) — no
-real customer data. The 14 fields carrying them are tagged `data-required` in
+real customer data. The 15 fields carrying them are tagged `data-required` in
 `index.html`.
 
 A required field counts as **not updated** while it is empty or still equal to
@@ -50,11 +53,13 @@ fee genuinely of `0.00 BIRR`) will keep warning. Retype it or ignore the chip.
 
 Deliberately locked, so they can't be disturbed:
 
+* every label, the title, the section and table headers, and the additional-info rows
 * the company block at the top — name, TIN NO, VAT REG NO, Address, Tel
 * the thank-you line at the bottom
 * the diagonal "M-PESA" watermark
 
-To change any of those, edit `index.html` directly.
+Only the yellow-highlighted value blocks are editable. To change any locked
+text, edit `index.html` directly.
 
 Edits are kept in the browser's local storage (key `mpesa-receipt-eeu-customer-v1`),
 so they survive a reload on the same machine and browser. **Reset** clears them.

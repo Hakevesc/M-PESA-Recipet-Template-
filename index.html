@@ -40,8 +40,9 @@
 
   <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
 
-  <!-- Every label and value below is editable. Values carrying sample data are
-       marked data-required: Update warns while they are still untouched. -->
+  <!-- Only the value blocks carrying sample data (marked data-required) are
+       editable - the yellow-highlighted blocks. Everything else - labels, the
+       title, the table headers and the top company details - is locked. -->
   <div class="transaction-info">
     <div class="info-row"><span class="info-label" data-editable data-field="l-payer-name"><span class="amharic">የከፋዩ ስም /</span> PAYER NAME</span><span class="info-value" data-editable data-required data-field="payer-name">Payer Full Name</span></div>
     <div class="info-row"><span class="info-label" data-editable data-field="l-payer-short-code"><span class="amharic">የከፋዩ አጭር ኮድ /</span> PAYER SHORT CODE</span><span class="info-value" data-editable data-required data-field="payer-short-code">2517XXXXXXXX</span></div>
@@ -75,7 +76,7 @@
     <div class="info-group"><span class="label" data-editable data-field="l-amount-words"><span class="amharic">ጠቅላላ መጠን በቃላት /</span> TOTAL AMOUNT IN WORD</span><span class="value" data-editable data-required data-field="amount-words">Amount In Words Only</span></div>
     <div class="info-group"><span class="label" data-editable data-field="l-debit-account"><span class="amharic">የተቀናሽ ሂሳብ /</span> DEBIT ACCOUNT</span><span class="value" data-editable data-field="debit-account">N/A</span></div>
     <div class="info-group"><span class="label" data-editable data-field="l-transaction-type"><span class="amharic">የግብይት ዓይነት /</span> TRANSACTION TYPE</span><span class="value" data-editable data-field="transaction-type">Pay Utility - EEU</span></div>
-    <div class="info-group"><span class="label" data-editable data-field="l-payment-channel"><span class="amharic">የክፍያ መንገድ /</span> PAYMENT CHANNEL</span><span class="value" data-editable data-field="payment-channel">USSD</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-channel"><span class="amharic">የክፍያ መንገድ /</span> PAYMENT CHANNEL</span><span class="value" data-editable data-required data-field="payment-channel">USSD</span></div>
     <div class="info-group"><span class="label" data-editable data-field="l-payment-reason"><span class="amharic">የክፍያ ምክንያት /</span> PAYMENT REASON</span><span class="value" data-editable data-field="payment-reason">Electricity Bill Payment</span></div>
   </div>
 
