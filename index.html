@@ -3,14 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M-PESA Receipt Template - Pay Utility EEU (Customer)</title>
+<title>M-PESA Receipt Template</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <!-- ===== editor toolbar (screen only, never printed / exported) ===== -->
 <div class="toolbar" id="toolbar">
-  <div class="brand">M-PESA Receipt Template<span>Pay Utility EEU &mdash; Customer</span></div>
+  <!-- receipt picker: sits where the brand block used to be -->
+  <div class="picker">
+    <label for="receipt-type">Receipt</label>
+    <select id="receipt-type">
+      <optgroup label="Pay Utility - EEU">
+        <option value="merchant">EEU - Merchant</option>
+        <option value="customer">EEU - Customer</option>
+      </optgroup>
+      <optgroup label="Pay Utility - School">
+        <option value="school-merchant">School Payment - Merchant</option>
+        <option value="school-customer">School Payment - Customer</option>
+      </optgroup>
+      <optgroup label="Airtime C2B">
+        <option value="airtime-merchant">Airtime C2B - Merchant</option>
+      </optgroup>
+    </select>
+  </div>
   <button type="button" class="btn btn-outline" id="btn-edit">Edit</button>
   <button type="button" class="btn btn-primary" id="btn-update" disabled>Update</button>
   <button type="button" class="btn" id="btn-print">Print</button>
@@ -18,8 +34,13 @@
   <button type="button" class="btn btn-outline" id="btn-reset" title="Restore the original template values">Reset</button>
 </div>
 
-<!-- ===== receipt (A4: 793.7 x 1122.5 px @96dpi = 210 x 297 mm) ===== -->
-<div class="page" id="receipt">
+<!-- ============================================================
+     MERCHANT receipt (A4: 793.7 x 1122.5 px @96dpi = 210 x 297 mm)
+     Only the value blocks carrying sample data (marked data-required) are
+     editable - the yellow-highlighted blocks. Everything else - labels, the
+     title, the table headers and the top company details - is locked.
+     ============================================================ -->
+<div class="page" id="receipt-merchant" data-variant="merchant" data-title="Pay Utility EEU (Merchant)" data-store="mpesa-receipt-eeu-customer-v1">
   <!-- decorative: deliberately not editable so the watermark can't be disturbed -->
   <div class="mpesa-watermark-text">M-PESA</div>
 
@@ -40,9 +61,6 @@
 
   <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
 
-  <!-- Only the value blocks carrying sample data (marked data-required) are
-       editable - the yellow-highlighted blocks. Everything else - labels, the
-       title, the table headers and the top company details - is locked. -->
   <div class="transaction-info">
     <div class="info-row"><span class="info-label" data-editable data-field="l-payer-name"><span class="amharic">የከፋዩ ስም /</span> PAYER NAME</span><span class="info-value" data-editable data-required data-field="payer-name">Payer Full Name</span></div>
     <div class="info-row"><span class="info-label" data-editable data-field="l-payer-short-code"><span class="amharic">የከፋዩ አጭር ኮድ /</span> PAYER SHORT CODE</span><span class="info-value" data-editable data-required data-field="payer-short-code">2517XXXXXXXX</span></div>
@@ -84,6 +102,287 @@
   <!-- fixed thank-you line: deliberately NOT editable -->
   <div class="footer">M-PESAን ስለተጠቀሙ እናመሰግናለን / THANK YOU FOR USING M-PESA</div>
   <!-- a real white wordmark, not a CSS invert filter: html2canvas ignores filters -->
+  <div class="footer-bar"><img src="assets/M-PESA-wordmark-white.svg" alt="M-PESA" width="145.5" height="39.69"></div>
+</div>
+
+<!-- ============================================================
+     CUSTOMER receipt - the payer's own copy (source: UI72LS7Y48.pdf).
+     Every transaction value on this sheet is editable (data-value); the ones
+     shipping with placeholder data also carry data-required, so they warn
+     while they still hold sample text. Labels, headers, the company block and
+     the thank-you line are locked, exactly like the merchant sheet.
+     ============================================================ -->
+<div class="page customer-page" id="receipt-customer" data-variant="customer" data-title="Pay Utility EEU (Customer)" data-store="mpesa-receipt-eeu-payer-v1">
+  <div class="mpesa-watermark-text">M-PESA</div>
+
+  <div class="header">
+    <div class="header-left">
+      <!-- combined M-PESA / Safaricom lockup, as printed on the customer copy -->
+      <img src="assets/M-PESA &amp; Safaricom-logo.png" alt="M-PESA | Safaricom" class="mpesa-logo-lockup" width="350" height="48.87">
+      <div class="company-name">Safaricom M-PESA Mobile Financial Services PLC</div>
+      <div class="company-details">
+        <span class="label">TIN NO :</span> <span class="bold-val">0084242753</span><br>
+        <span class="label">VAT REG NO :</span> <span class="bold-val">22371880003</span><br>
+        <span class="label">Address :</span> <span class="bold-val">Addis Ababa, Kirkos Woreda 1</span><br>
+        <span class="label">Tel:</span> <span class="bold-val">+251 756 765434</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
+
+  <div class="transaction-info">
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-name"><span class="amharic">የከፋይ ስም /</span> PAYER NAME</span><span class="info-value" data-editable data-value data-required data-field="payer-name">Payer Full Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-phone"><span class="amharic">የከፋይ ስልክ ቁጥር /</span> PAYER PHONE NUMBER</span><span class="info-value" data-editable data-value data-required data-field="payer-phone">2517XXXXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-tin"><span class="amharic">የከፋይ ቲን ቁጥር /</span> PAYER TIN NO</span><span class="info-value" data-editable data-value data-required data-field="payer-tin">0000000000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-receiver-org-name"><span class="amharic">የተቀባዩ ድርጅት ስም /</span> RECEIVER ORGANIZATION NAME</span><span class="info-value" data-editable data-value data-field="receiver-org-name">Ethiopian Electric Utility</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-receiver-org-number"><span class="amharic">የተቀባዩ ድርጅት ቁጥር /</span> RECEIVER ORGANIZATION NUMBER</span><span class="info-value" data-editable data-value data-field="receiver-org-number">9050</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payment-reference"><span class="amharic">የክፍያ ቁጥር /</span> PAYMENT REFERENCE NUMBER</span><span class="info-value" data-editable data-value data-required data-field="payment-reference">00000000000 - Reference</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-bill-month"><span class="amharic">የክፍያ ወር /</span> BILL MONTH</span><span class="info-value" data-editable data-value data-required data-field="bill-month">Month - 0000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-transaction-id"><span class="amharic">የግብይት ቁጥር /</span> TRANSACTION ID</span><span class="info-value" data-editable data-value data-required data-field="transaction-id">XXXXXXXXXX</span></div>
+  </div>
+
+  <div class="detail-section">
+    <div class="section-header"><h2 data-editable data-field="detail-heading">TRANSACTION DETAIL</h2></div>
+    <table class="detail-table settle-table">
+      <thead><tr>
+        <th style="width: 33.5%;" data-editable data-field="th-receipt-no"><span class="amharic">ደረሰኝ ቁጥር /</span> RECIEPT NO</th>
+        <th style="width: 33%;" data-editable data-field="th-payment-date"><span class="amharic">የክፍያ ቀን /</span> PAYMENT DATE</th>
+        <th style="width: 33.5%;" data-editable data-field="th-settled-amount"><span class="amharic">የገንዘብ መጠን /</span> SETTLED AMOUNT</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td data-editable data-value data-required data-field="receipt-no">RCP0000SAMPLE</td>
+          <td data-editable data-value data-required data-field="payment-date">DD-MM-YYYY 00:00:00</td>
+          <td class="amount-cell" data-editable data-value data-required data-field="settled-amount">0.00 BIRR</td>
+        </tr>
+        <tr>
+          <td class="blank-cell"></td>
+          <td class="fee-label" data-editable data-field="l-service-fee"><span class="amharic">የአገልግሎት ክፍያ /</span> SERVICE FEE</td>
+          <td class="amount-cell" data-editable data-value data-required data-field="service-fee">0.00 BIRR</td>
+        </tr>
+        <tr>
+          <td class="blank-cell"></td>
+          <td class="fee-label" data-editable data-field="l-vat"><span class="amharic">ተጨማሪ እሴት ታክስ /</span> + 15% VAT</td>
+          <td class="amount-cell" data-editable data-value data-required data-field="vat">0.00 BIRR</td>
+        </tr>
+        <tr>
+          <td class="blank-cell"></td>
+          <td class="fee-label" data-editable data-field="l-total"><span class="amharic">ጠቅላላ /</span> TOTAL</td>
+          <td class="amount-cell" data-editable data-value data-required data-field="total-amount">0.00 BIRR</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="additional-info">
+    <div class="info-group"><span class="label" data-editable data-field="l-amount-words"><span class="amharic">ጠቅላላ መጠን በፊደል /</span> TOTAL AMOUNT IN WORD</span><span class="value" data-editable data-value data-required data-field="amount-words">Amount In Words Only</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-method"><span class="amharic">የክፍያ ዘዴ /</span> PAYMENT METHOD</span><span class="value" data-editable data-value data-field="payment-method">M-PESA Main Account</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-transaction-type"><span class="amharic">የግብይት አይነት /</span> TRANSACTION TYPE</span><span class="value" data-editable data-value data-field="transaction-type">Pay Utility</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-channel"><span class="amharic">የክፍያ መንገድ /</span> PAYMENT CHANNEL</span><span class="value" data-editable data-value data-required data-field="payment-channel">USSD</span></div>
+    <!-- printed blank on the source receipt; still editable -->
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-reason"><span class="amharic">የክፍያ ምክንያት /</span> PAYMENT REASON</span><span class="value" data-editable data-value data-field="payment-reason"></span></div>
+  </div>
+
+  <div class="stamp-watermark stamp-inline"><img src="assets/M-PESA-official_stamp.png" alt="M-PESA Stamp"></div>
+  <div class="footer">M-PESAን ስተጠቀሙ እናመሰግናለን / THANK YOU FOR USING M-PESA</div>
+  <div class="footer-bar footer-bar-lockup"><img src="assets/M-PESA &amp; Safaricom-logo-white.png" alt="M-PESA | Safaricom" width="230" height="32.5"></div>
+</div>
+
+<!-- ============================================================
+     SCHOOL PAYMENT - merchant copy
+     (source: Merchant PDF RECEIPT/Pay_Utility_School_Receipt_Business_Merchant.html)
+     Same rules as the EEU merchant sheet: only the yellow data-required
+     values are editable; labels, headings and constants are locked.
+     ============================================================ -->
+<div class="page compact-page" id="receipt-school-merchant" data-variant="school-merchant" data-title="Pay Utility School (Merchant)" data-store="mpesa-receipt-school-merchant-v1">
+  <div class="mpesa-watermark-text">M-PESA</div>
+
+  <div class="header">
+    <div class="header-left">
+      <img src="assets/M-PESA-red-logo.svg" alt="M-PESA" class="mpesa-logo" width="208" height="56.7">
+      <div class="company-name">Safaricom M-PESA Mobile Financial Services PLC</div>
+      <div class="company-details">
+        <span class="label">TIN NO:</span> <span class="bold-val">0084242753</span><br>
+        <span class="label">VAT REG NO:</span> <span class="bold-val">22371880003</span><br>
+        <span class="label">Address:</span> <span class="bold-val">Addis Ababa, Kirkos Woreda 1</span><br>
+        <span class="label">Tel:</span> <span class="bold-val">+251 756 765434</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
+
+  <div class="transaction-info">
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-name"><span class="amharic">የከፋዩ ስም /</span> PAYER NAME</span><span class="info-value" data-editable data-required data-field="payer-name">Payer Full Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-short-code"><span class="amharic">የከፋዩ አጭር ኮድ /</span> PAYER SHORT CODE</span><span class="info-value" data-editable data-required data-field="payer-short-code">XXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-tin"><span class="amharic">የከፋዩ TIN ቁጥር /</span> PAYER TIN NO</span><span class="info-value" data-editable data-required data-field="payer-tin">0000000000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-school-name"><span class="amharic">የተቀባይ ትምህርት ቤት ስም /</span> RECEIVER SCHOOL NAME</span><span class="info-value" data-editable data-required data-field="school-name">School Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-customer-phone"><span class="amharic">የደንበኛ ስልክ ቁጥር /</span> CUSTOMER PHONE NUMBER</span><span class="info-value" data-editable data-required data-field="customer-phone">2517XXXXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-school-code"><span class="amharic">የትምህርት ቤት ኮድ /</span> SCHOOL CODE</span><span class="info-value" data-editable data-required data-field="school-code">SCH-0000-000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-student-id"><span class="amharic">የተማሪ መታወቂያ /</span> STUDENT ID</span><span class="info-value" data-editable data-required data-field="student-id">STU-0000-00000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-fee-type"><span class="amharic">የክፍያ ዓይነት /</span> FEE TYPE</span><span class="info-value" data-editable data-required data-field="fee-type">Fee Type - Term 0</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-outstanding"><span class="amharic">ያልተከፈለ መጠን /</span> OUTSTANDING AMOUNT</span><span class="info-value" data-editable data-required data-field="outstanding">0.00 BIRR</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-transaction-id"><span class="amharic">የግብይት መታወቂያ /</span> TRANSACTION ID</span><span class="info-value" data-editable data-required data-field="transaction-id">XXXXXXXXXX</span></div>
+  </div>
+
+  <div class="detail-section">
+    <div class="section-header"><h2 data-editable data-field="detail-heading">TRANSACTION DETAIL</h2></div>
+    <table class="detail-table">
+      <thead><tr>
+        <th style="width: 33%;" data-editable data-field="th-receipt-no"><span class="amharic">ደረሰኝ ቁጥር /</span> RECEIPT NO</th>
+        <th style="width: 33%;" data-editable data-field="th-payment-date"><span class="amharic">የክፍያ ቀን /</span> PAYMENT DATE</th>
+        <th style="width: 34%;" data-editable data-field="th-total"><span class="amharic">ጠቅላላ መጠን /</span> TOTAL AMOUNT</th>
+      </tr></thead>
+      <tbody>
+        <tr><td data-editable data-required data-field="receipt-no">RCP-0000-SAMPLE</td><td data-editable data-required data-field="payment-date">DD-MM-YYYY 00:00:00</td><td class="amount-cell" data-editable data-required data-field="bill-amount">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-service-fee">የአገልግሎት ክፍያ / SERVICE FEE</td><td class="amount-cell" data-editable data-required data-field="service-fee">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-commission-fee">የኮሚሽን ክፍያ / COMMISSION FEE</td><td class="amount-cell" data-editable data-required data-field="commission-fee">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-vat">15% VAT</td><td class="amount-cell" data-editable data-required data-field="vat">0.00 BIRR</td></tr>
+        <tr class="total-row"><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-total">ጠቅላላ / TOTAL</td><td class="amount-cell" data-editable data-required data-field="total-amount">0.00 BIRR</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="additional-info">
+    <div class="info-group"><span class="label" data-editable data-field="l-amount-words"><span class="amharic">ጠቅላላ መጠን በቃላት /</span> TOTAL AMOUNT IN WORD</span><span class="value" data-editable data-required data-field="amount-words">Amount In Words Only</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-debit-account"><span class="amharic">የተቀናሽ ሂሳብ /</span> DEBIT ACCOUNT</span><span class="value" data-editable data-required data-field="debit-account">M-PESA Float A/C - XXXXXX</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-transaction-type"><span class="amharic">የግብይት ዓይነት /</span> TRANSACTION TYPE</span><span class="value" data-editable data-field="transaction-type">Pay Utility - School</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-channel"><span class="amharic">የክፍያ መንገድ /</span> PAYMENT CHANNEL</span><span class="value" data-editable data-required data-field="payment-channel">USSD</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-reason"><span class="amharic">የክፍያ ምክንያት /</span> PAYMENT REASON</span><span class="value" data-editable data-field="payment-reason">School Fee Payment</span></div>
+  </div>
+
+  <div class="stamp-watermark"><img src="assets/M-PESA-official_stamp.png" alt="M-PESA Stamp"></div>
+  <div class="footer">M-PESAን ስለተጠቀሙ እናመሰግናለን / THANK YOU FOR USING M-PESA</div>
+  <div class="footer-bar"><img src="assets/M-PESA-wordmark-white.svg" alt="M-PESA" width="145.5" height="39.69"></div>
+</div>
+
+<!-- ============================================================
+     SCHOOL PAYMENT - customer copy
+     (source: Merchant PDF RECEIPT/Pay_Utility_School_Receipt_Customer_Merchant.html)
+     Same skeleton as the merchant school sheet, without the commission fee
+     row and the debit account.
+     ============================================================ -->
+<div class="page" id="receipt-school-customer" data-variant="school-customer" data-title="Pay Utility School (Customer)" data-store="mpesa-receipt-school-customer-v1">
+  <div class="mpesa-watermark-text">M-PESA</div>
+
+  <div class="header">
+    <div class="header-left">
+      <img src="assets/M-PESA-red-logo.svg" alt="M-PESA" class="mpesa-logo" width="208" height="56.7">
+      <div class="company-name">Safaricom M-PESA Mobile Financial Services PLC</div>
+      <div class="company-details">
+        <span class="label">TIN NO:</span> <span class="bold-val">0084242753</span><br>
+        <span class="label">VAT REG NO:</span> <span class="bold-val">22371880003</span><br>
+        <span class="label">Address:</span> <span class="bold-val">Addis Ababa, Kirkos Woreda 1</span><br>
+        <span class="label">Tel:</span> <span class="bold-val">+251 756 765434</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
+
+  <div class="transaction-info">
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-name"><span class="amharic">የከፋዩ ስም /</span> PAYER NAME</span><span class="info-value" data-editable data-required data-field="payer-name">Payer Full Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-short-code"><span class="amharic">የከፋዩ አጭር ኮድ /</span> PAYER SHORT CODE</span><span class="info-value" data-editable data-required data-field="payer-short-code">XXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-payer-tin"><span class="amharic">የከፋዩ TIN ቁጥር /</span> PAYER TIN NO</span><span class="info-value" data-editable data-required data-field="payer-tin">0000000000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-school-name"><span class="amharic">የተቀባይ ትምህርት ቤት ስም /</span> RECEIVER SCHOOL NAME</span><span class="info-value" data-editable data-required data-field="school-name">School Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-customer-phone"><span class="amharic">የደንበኛ ስልክ ቁጥር /</span> CUSTOMER PHONE NUMBER</span><span class="info-value" data-editable data-required data-field="customer-phone">2517XXXXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-school-code"><span class="amharic">የትምህርት ቤት ኮድ /</span> SCHOOL CODE</span><span class="info-value" data-editable data-required data-field="school-code">SCH-0000-000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-student-id"><span class="amharic">የተማሪ መታወቂያ /</span> STUDENT ID</span><span class="info-value" data-editable data-required data-field="student-id">STU-0000-00000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-fee-type"><span class="amharic">የክፍያ ዓይነት /</span> FEE TYPE</span><span class="info-value" data-editable data-required data-field="fee-type">Fee Type - Term 0</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-outstanding"><span class="amharic">ያልተከፈለ መጠን /</span> OUTSTANDING AMOUNT</span><span class="info-value" data-editable data-required data-field="outstanding">0.00 BIRR</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-transaction-id"><span class="amharic">የግብይት መታወቂያ /</span> TRANSACTION ID</span><span class="info-value" data-editable data-required data-field="transaction-id">XXXXXXXXXX</span></div>
+  </div>
+
+  <div class="detail-section">
+    <div class="section-header"><h2 data-editable data-field="detail-heading">TRANSACTION DETAIL</h2></div>
+    <table class="detail-table">
+      <thead><tr>
+        <th style="width: 33%;" data-editable data-field="th-receipt-no"><span class="amharic">ደረሰኝ ቁጥር /</span> RECEIPT NO</th>
+        <th style="width: 33%;" data-editable data-field="th-payment-date"><span class="amharic">የክፍያ ቀን /</span> PAYMENT DATE</th>
+        <th style="width: 34%;" data-editable data-field="th-total"><span class="amharic">ጠቅላላ መጠን /</span> TOTAL AMOUNT</th>
+      </tr></thead>
+      <tbody>
+        <tr><td data-editable data-required data-field="receipt-no">RCP-0000-SAMPLE</td><td data-editable data-required data-field="payment-date">DD-MM-YYYY 00:00:00</td><td class="amount-cell" data-editable data-required data-field="bill-amount">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-service-fee">የአገልግሎት ክፍያ / SERVICE FEE</td><td class="amount-cell" data-editable data-required data-field="service-fee">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-vat">15% VAT</td><td class="amount-cell" data-editable data-required data-field="vat">0.00 BIRR</td></tr>
+        <tr class="total-row"><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-total">ጠቅላላ / TOTAL</td><td class="amount-cell" data-editable data-required data-field="total-amount">0.00 BIRR</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="additional-info">
+    <div class="info-group"><span class="label" data-editable data-field="l-amount-words"><span class="amharic">ጠቅላላ መጠን በቃላት /</span> TOTAL AMOUNT IN WORD</span><span class="value" data-editable data-required data-field="amount-words">Amount In Words Only</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-transaction-type"><span class="amharic">የግብይት ዓይነት /</span> TRANSACTION TYPE</span><span class="value" data-editable data-field="transaction-type">Pay Utility - School</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-channel"><span class="amharic">የክፍያ መንገድ /</span> PAYMENT CHANNEL</span><span class="value" data-editable data-required data-field="payment-channel">USSD</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-payment-reason"><span class="amharic">የክፍያ ምክንያት /</span> PAYMENT REASON</span><span class="value" data-editable data-field="payment-reason">School Fee Payment</span></div>
+  </div>
+
+  <div class="stamp-watermark"><img src="assets/M-PESA-official_stamp.png" alt="M-PESA Stamp"></div>
+  <div class="footer">M-PESAን ስለተጠቀሙ እናመሰግናለን / THANK YOU FOR USING M-PESA</div>
+  <div class="footer-bar"><img src="assets/M-PESA-wordmark-white.svg" alt="M-PESA" width="145.5" height="39.69"></div>
+</div>
+
+<!-- ============================================================
+     AIRTIME C2B - merchant copy
+     (source: Merchant PDF RECEIPT/Sell_Airtime_Receipt_Business_Merchant.html)
+     The merchant sells airtime to a customer's phone number.
+     ============================================================ -->
+<div class="page" id="receipt-airtime-merchant" data-variant="airtime-merchant" data-title="Airtime C2B (Merchant)" data-store="mpesa-receipt-airtime-merchant-v1">
+  <div class="mpesa-watermark-text">M-PESA</div>
+
+  <div class="header">
+    <div class="header-left">
+      <img src="assets/M-PESA-red-logo.svg" alt="M-PESA" class="mpesa-logo" width="208" height="56.7">
+      <div class="company-name">Safaricom M-PESA Mobile Financial Services PLC</div>
+      <div class="company-details">
+        <span class="label">TIN NO:</span> <span class="bold-val">0084242753</span><br>
+        <span class="label">VAT REG NO:</span> <span class="bold-val">22371880003</span><br>
+        <span class="label">Address:</span> <span class="bold-val">Addis Ababa, Kirkos Woreda 1</span><br>
+        <span class="label">Tel:</span> <span class="bold-val">+251 756 765434</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="title-box"><h1 data-editable data-field="title">TRANSACTION INFORMATION</h1></div>
+
+  <div class="transaction-info">
+    <div class="info-row"><span class="info-label" data-editable data-field="l-merchant-name"><span class="amharic">የነጋዴ ስም /</span> MERCHANT NAME</span><span class="info-value" data-editable data-required data-field="merchant-name">Merchant Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-merchant-short-code"><span class="amharic">የነጋዴ አጭር ኮድ /</span> MERCHANT SHORT CODE</span><span class="info-value" data-editable data-required data-field="merchant-short-code">XXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-merchant-tin"><span class="amharic">የነጋዴ TIN ቁጥር /</span> MERCHANT TIN NO</span><span class="info-value" data-editable data-required data-field="merchant-tin">0000000000</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-receiver-name"><span class="amharic">የተቀባይ ስም /</span> RECEIVER NAME</span><span class="info-value" data-editable data-required data-field="receiver-name">Receiver Full Name</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-receiver-phone"><span class="amharic">የተቀባይ ስልክ ቁጥር /</span> RECEIVER PHONE NUMBER</span><span class="info-value" data-editable data-required data-field="receiver-phone">2517XXXXXXXX</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-amount"><span class="amharic">መጠን /</span> AMOUNT</span><span class="info-value" data-editable data-required data-field="amount">0.00 BIRR</span></div>
+    <div class="info-row"><span class="info-label" data-editable data-field="l-transaction-id"><span class="amharic">የግብይት መታወቂያ /</span> TRANSACTION ID</span><span class="info-value" data-editable data-required data-field="transaction-id">XXXXXXXXXX</span></div>
+  </div>
+
+  <div class="detail-section">
+    <div class="section-header"><h2 data-editable data-field="detail-heading">TRANSACTION DETAIL</h2></div>
+    <table class="detail-table">
+      <thead><tr>
+        <th style="width: 33%;" data-editable data-field="th-receipt-no"><span class="amharic">ደረሰኝ ቁጥር /</span> RECEIPT NO</th>
+        <th style="width: 33%;" data-editable data-field="th-transaction-date"><span class="amharic">የግብይት ቀንና ሰዓት /</span> TRANSACTION DATE &amp; TIME</th>
+        <th style="width: 34%;" data-editable data-field="th-airtime-amount"><span class="amharic">የአየር ሰዓት መጠን /</span> AIRTIME AMOUNT</th>
+      </tr></thead>
+      <tbody>
+        <tr><td data-editable data-required data-field="receipt-no">RCP-0000-SAMPLE</td><td data-editable data-required data-field="transaction-date">DD-MM-YYYY 00:00:00</td><td class="amount-cell" data-editable data-required data-field="airtime-amount">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-commission-fee">የኮሚሽን ክፍያ / COMMISSION FEE</td><td class="amount-cell" data-editable data-required data-field="commission-fee">0.00 BIRR</td></tr>
+        <tr><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-vat">15% VAT</td><td class="amount-cell" data-editable data-required data-field="vat">0.00 BIRR</td></tr>
+        <tr class="total-row"><td colspan="2" style="text-align: right; padding-right: 15.1px;" data-editable data-field="l-total">ጠቅላላ / TOTAL AMOUNT</td><td class="amount-cell" data-editable data-required data-field="total-amount">0.00 BIRR</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="additional-info">
+    <div class="info-group"><span class="label" data-editable data-field="l-amount-words"><span class="amharic">ጠቅላላ መጠን በቃላት /</span> TOTAL AMOUNT IN WORD</span><span class="value" data-editable data-required data-field="amount-words">Amount In Words Only</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-debit-account"><span class="amharic">የተቀናሽ ሂሳብ /</span> DEBIT ACCOUNT</span><span class="value" data-editable data-required data-field="debit-account">M-PESA Float A/C - XXXXXX</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-transaction-type"><span class="amharic">የግብይት ዓይነት /</span> TRANSACTION TYPE</span><span class="value" data-editable data-field="transaction-type">Sell Airtime</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-used-channel"><span class="amharic">የግብይት መነሻ /</span> USED CHANNEL</span><span class="value" data-editable data-required data-field="used-channel">USSD</span></div>
+    <div class="info-group"><span class="label" data-editable data-field="l-transaction-reason"><span class="amharic">የግብይት ምክንያት /</span> TRANSACTION REASON</span><span class="value" data-editable data-field="transaction-reason">Airtime Sale to Customer</span></div>
+  </div>
+
+  <div class="stamp-watermark"><img src="assets/M-PESA-official_stamp.png" alt="M-PESA Stamp"></div>
+  <div class="footer">M-PESAን ስለተጠቀሙ እናመሰግናለን / THANK YOU FOR USING M-PESA</div>
   <div class="footer-bar"><img src="assets/M-PESA-wordmark-white.svg" alt="M-PESA" width="145.5" height="39.69"></div>
 </div>
 

@@ -57,8 +57,18 @@ body { font-family: 'Inter', Arial, sans-serif; background: #E8E8E8; display: fl
   margin-bottom: 16px; padding: 12px 14px;
   background: #FFF; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.12);
 }
-.toolbar .brand { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #1C1C21; margin-right: auto; }
-.toolbar .brand span { display: block; font-family: 'Inter', Arial, sans-serif; font-weight: 400; font-size: 11px; color: #777; letter-spacing: 0.2px; }
+/* receipt picker - occupies the spot the brand block used to hold */
+.toolbar .picker { display: flex; align-items: center; gap: 8px; margin-right: auto; }
+.toolbar .picker label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #1C1C21; }
+.toolbar .picker select {
+  font-family: 'Inter', Arial, sans-serif; font-size: 13px; font-weight: 600; color: #1C1C21;
+  padding: 9px 32px 9px 12px; border: 1px solid #CFCFCF; border-radius: 6px; background-color: #FFF;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%231C1C21' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center; background-size: 10px 7px;
+  -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer;
+}
+.toolbar .picker select:hover { background-color: #F5F5F5; }
+.toolbar .picker select:focus { outline: 2px solid #00A651; outline-offset: 1px; }
 .btn {
   font-family: 'Inter', Arial, sans-serif; font-size: 13px; font-weight: 600;
   padding: 9px 18px; border: 1px solid transparent; border-radius: 6px;
@@ -71,8 +81,10 @@ body { font-family: 'Inter', Arial, sans-serif; background: #E8E8E8; display: fl
 .btn-outline:hover:not(:disabled) { background: #F5F5F5; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* edit mode - only the yellow-highlighted value blocks (data-required) are editable */
-body.editing .page [data-editable][data-required] {
+/* edit mode - template.js tags the unlocked value blocks with .field-edit:
+   the merchant sheet unlocks its data-required blocks, the customer sheet
+   unlocks every transaction value (data-value). */
+body.editing .page .field-edit {
   outline: 1px dashed #00A651;
   outline-offset: 2px;
   border-radius: 2px;
@@ -81,9 +93,9 @@ body.editing .page [data-editable][data-required] {
   min-height: 1em;
   transition: background .12s;
 }
-body.editing .page [data-editable][data-required]:hover { background: rgba(0,166,81,0.06); }
-body.editing .page [data-editable][data-required]:focus { outline: 2px solid #00A651; background: rgba(0,166,81,0.10); }
-body.editing .page [data-editable][data-required] .amharic { outline: none; }
+body.editing .page .field-edit:hover { background: rgba(0,166,81,0.06); }
+body.editing .page .field-edit:focus { outline: 2px solid #00A651; background: rgba(0,166,81,0.10); }
+body.editing .page .field-edit .amharic { outline: none; }
 
 /* fields still holding sample data - screen only, never captured in the export */
 body:not(.exporting) .page [data-editable].needs-data {
@@ -124,3 +136,73 @@ body.exporting .toolbar, body.exporting .hint { visibility: hidden; }
   .toolbar { width: 100%; }
   .page { width: 100%; min-height: auto; }
 }
+
+
+/* ============================================================
+   variant switching - only the selected receipt is in the document flow,
+   so print and the PDF export never pick up the other sheet.
+   ============================================================ */
+.page.is-hidden { display: none !important; }
+
+/* ============================================================
+   CUSTOMER sheet - the payer's copy. Same skeleton as the merchant sheet
+   with the source receipt's own logo lockup, wider label column, centred
+   settlement table and an upright stamp.
+   ============================================================ */
+.customer-page .mpesa-logo-lockup { width: 350px; height: 48.87px; margin-bottom: 13.2px; }
+.customer-page .company-details { line-height: 2.2; }
+
+.customer-page .info-row,
+.customer-page .info-group { padding: 4.8px 0; gap: 30px; }
+.customer-page .info-label,
+.customer-page .info-group .label { min-width: 336px; max-width: 336px; text-transform: none; }
+.customer-page .info-value,
+.customer-page .info-group .value { font-weight: 700; }
+
+/* settlement table: everything centred, the fee labels flush right and the
+   left column boxed on the first row only, exactly as printed. */
+.settle-table th { text-align: center; }
+.settle-table th:last-child { text-align: center; }
+.settle-table td { text-align: center; font-weight: 600; }
+.settle-table td:last-child { text-align: center; }
+.settle-table .fee-label { text-align: right; font-weight: 500; padding-right: 11.3px; }
+.settle-table .blank-cell { border: none; padding: 0; }
+
+/* Opens the gap under the settlement table that the stamp drops into. The
+   footer carries margin-top:auto, so this spends slack the sheet already had
+   and the page stays exactly one A4 tall. */
+.customer-page .additional-info { margin-top: 36px; }
+
+/* Upright, straddling the bottom of the settlement table as on the source
+   receipt: it clips the tail of the TOTAL label and clears every amount. */
+.customer-page .stamp-inline {
+  top: 745px; right: auto; left: 468px;
+  width: 100px; height: 100px;
+  transform: none;
+}
+
+.footer-bar-lockup { justify-content: flex-end; }
+.footer-bar-lockup img { width: 230px; height: 32.5px; }
+
+/* ============================================================
+   COMPACT sheet - School Payment (merchant) carries 10 info rows, a 5-row
+   detail table and 5 additional rows, ~30px more than one A4 sheet at the
+   standard rhythm. Tighten the row padding so it still fits without the
+   uniform scale-down in template.js kicking in.
+   ============================================================ */
+.compact-page .info-row,
+.compact-page .info-group { padding: 2.6px 0; }
+.compact-page .detail-table th,
+.compact-page .detail-table td { padding: 6.4px 7.6px; }
+.compact-page .title-box { margin-bottom: 18.9px; }
+
+/* School sheets: "RECEIVER SCHOOL NAME" is wider than the label column, so
+   cap the column and let that one label wrap (the source broke it in two)
+   instead of pushing its value out of line with the others. */
+#receipt-school-merchant .info-label,
+#receipt-school-customer .info-label { max-width: 272.1px; }
+
+/* The school tables end lower than the EEU one, so drop the stamp to keep
+   it clear of the TOTAL amount. */
+#receipt-school-merchant .stamp-watermark { top: 790px; }
+#receipt-school-customer .stamp-watermark { top: 800px; }
