@@ -40,8 +40,8 @@ EEU merchant sheet's style (green brand, no QR block, locked labels, yellow
 | **School Payment - Customer** | `Pay_Utility_School_Receipt_Customer_Merchant.html` | same info rows; SERVICE FEE, 15% VAT and TOTAL rows; payment channel (added, as on the EEU sheets) |
 | **Airtime C2B - Merchant** | `Sell_Airtime_Receipt_Business_Merchant.html` | merchant name / short code / TIN, receiver name + phone, amount, transaction ID; `RECEIPT NO · TRANSACTION DATE & TIME · AIRTIME AMOUNT` table with COMMISSION FEE, 15% VAT and TOTAL rows; debit account + used channel |
 
-Locked constants on these sheets: `TRANSACTION TYPE` (`Pay Utility - School` /
-`Sell Airtime`) and `PAYMENT REASON` / `TRANSACTION REASON`. The School Payment
+`TRANSACTION TYPE` (`Pay Utility - School` / `Sell Airtime`) and `PAYMENT
+REASON` / `TRANSACTION REASON` are editable but never warn. The School Payment
 merchant sheet carries the most rows, so it uses `.compact-page` (tighter row
 padding) to stay one A4 page without being scaled down.
 
@@ -77,11 +77,15 @@ What is unlocked differs, and is driven by two attributes in the markup:
 
 | Sheet | Unlocked | Warns |
 | --- | --- | --- |
-| Merchant | 15 fields (the yellow-highlighted `data-required` blocks) | the same 15 |
-| School Payment - Merchant | 20 | 20 |
-| School Payment - Customer | 18 | 18 |
-| Airtime C2B - Merchant | 16 | 16 |
+| Merchant | 19 fields: the 16 yellow-highlighted `data-required` blocks (including `RECEIVER BUSINESS NAME` = `Bank Name - Account Number`) + `TRANSACTION DETAIL`, `TRANSACTION TYPE` and `PAYMENT REASON` | the 16 |
+| School Payment - Merchant | 22 | 20 |
+| School Payment - Customer | 20 | 18 |
+| Airtime C2B - Merchant | 18 | 16 |
 | Customer | all 19 transaction values | 14 of them |
+
+`PAYMENT CHANNEL` (`USED CHANNEL` on Airtime) is editable and warns on every
+sheet; `TRANSACTION TYPE` and `PAYMENT REASON` (`TRANSACTION REASON` on
+Airtime) are editable everywhere and never warn.
 
 The customer sheet is fully editable end to end, including the values that are
 constant in practice — `RECEIVER ORGANIZATION NAME`, `RECEIVER ORGANIZATION
